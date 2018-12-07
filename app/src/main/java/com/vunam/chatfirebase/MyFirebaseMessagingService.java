@@ -31,6 +31,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      */
     // [START receive_message]
     @Override
+    public void onNewToken(String token) {
+        Log.d(TAG, "Refreshed token: " + token);
+
+        // If you want to send messages to this application instance or
+        // manage this apps subscriptions on the server side, send the
+        // Instance ID token to your app server.
+        //sendRegistrationToServer(token);
+    }
+
+    @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         // [START_EXCLUDE]
         // There are two types of messages data messages and notification messages. Data messages are handled
