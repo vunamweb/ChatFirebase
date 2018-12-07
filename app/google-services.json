@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "12544342651",
+    "firebase_url": "https://login-1ace4.firebaseio.com",
+    "project_id": "login-1ace4",
+    "storage_bucket": "login-1ace4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:12544342651:android:fc8c60943e6cfec8",
+        "android_client_info": {
+          "package_name": "com.login.vunam.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "12544342651-frdibnobgfh4a7dcdo6grejjs76aubrd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBW8ABV6JUCMAAo5P-yUlzWTelMLh_Cdwk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:12544342651:android:f5eaf0b122dd1104",
+        "android_client_info": {
+          "package_name": "com.vunam.chatfirebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "12544342651-frdibnobgfh4a7dcdo6grejjs76aubrd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBW8ABV6JUCMAAo5P-yUlzWTelMLh_Cdwk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
