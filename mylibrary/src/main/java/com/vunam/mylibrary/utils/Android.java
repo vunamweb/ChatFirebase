@@ -93,6 +93,14 @@ public class Android {
 	public static class MySharedPreferences
 	{
 		SharedPreferences sharedPreferences;
+		static MySharedPreferences instance;
+
+		static MySharedPreferences getInstance(Context context)
+		{
+			if(instance == null)
+				instance = new MySharedPreferences(context);
+			return instance;
+		}
 
 		public MySharedPreferences(Context context)
 		{

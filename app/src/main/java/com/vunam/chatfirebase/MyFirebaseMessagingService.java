@@ -12,7 +12,11 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.vunam.chatfirebase.utils.NetworkUtilsChat;
 import com.vunam.mylibrary.common.Constants;
+import com.vunam.mylibrary.utils.Android;
+
+import org.json.JSONException;
 
 import static com.vunam.mylibrary.common.Constants.DISPLAY_MESSAGE_ACTION;
 
@@ -33,7 +37,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onNewToken(String token) {
         Log.d(TAG, "Refreshed token: " + token);
-
+        new Android.MySharedPreferences(getApplicationContext()).putSharedPreferences("Notification",token);
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // Instance ID token to your app server.

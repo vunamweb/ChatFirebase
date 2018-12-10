@@ -37,12 +37,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.vunam.chatfirebase.utils.NetworkUtilsChat;
+import com.vunam.chatfirebase.utils.ProcessAsyncTaskChat;
 import com.vunam.mylibrary.network.NetworkUtils;
 import com.vunam.mylibrary.utils.Android;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,6 +60,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private static final int REQUEST_READ_CONTACTS = 0;
     static String check="0";
+    private String token;
+    private String url;
 
 
     /**
@@ -107,6 +111,24 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+//        new ProcessAsyncTaskChat() {
+//            @Override
+//            public Object getBackground() {
+//                try {
+//                    FirebaseInstanceId.getInstance().deleteInstanceId();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                return null;
+//            }
+//            @Override
+//            public void updateGUI(Object result)
+//            {
+//
+//            }
+//
+//        }.execute();
     }
 
     private void populateAutoComplete() {
@@ -159,7 +181,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-        if (mAuthTask != null) {
+		Toast.makeText(LoginActivity.this, "fdfdfff", Toast.LENGTH_SHORT).show();
+    	if (mAuthTask != null) {
             return;
         }
 
@@ -167,10 +190,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailView.setError(null);
         mPasswordView.setError(null);
 
+        //set text
+		mEmailView.setText("test@yahoo.com");
+		mPasswordView.setText("123456");
+
         // Store values at the time of the login attempt.
         final String email = mEmailView.getText().toString();
         final String password = mPasswordView.getText().toString();
-        String url = getResources().getString(R.string.url);
+        url = getResources().getString(R.string.url);
 
         boolean cancel = false;
         View focusView = null;
@@ -202,62 +229,54 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // perform the user login attempt.
             showProgress(true);
 			//get token
-			FirebaseInstanceId.getInstance().getInstanceId()
-					.addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-						@Override
-						public void onComplete(@NonNull Task<InstanceIdResult> task) {
-							if (!task.isSuccessful()) {
-								Log.e("Firebase", "getInstanceId failed", task.getException());
-								return;
+			token = new Android.MySharedPreferences(getApplicationContext()).getSharedPreferences("Notification");
+			if (token.equals("")) {
+				FirebaseInstanceId.getInstance().getInstanceId()
+						.addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+							@Override
+							public void onComplete(@NonNull Task<InstanceIdResult> task) {
+								if (!task.isSuccessful()) {
+									Log.e("Firebase", "getInstanceId failed", task.getException());
+									return;
+								}
+								// Get new Instance ID token
+								token = task.getResult().getToken();
+								url = url + "?regID=" + token + "&email=" + email + "&password=" + password;
+								Login(url);
 							}
-
-							// Get new Instance ID token
-							String token = task.getResult().getToken();
-							String url = getResources().getString(R.string.url);
-							url = url + "?regID=" + token + "&email=" +email + "&password=" +password;
-							try {
-								new NetworkUtilsChat(getApplicationContext(),url).getResponse(null);
-							} catch (JSONException e) {
-								e.printStackTrace();
-							}
-							// Log and toast
-							Log.d("Firebase", token);
-							Toast.makeText(LoginActivity.this, token, Toast.LENGTH_SHORT).show();
-						}
-					});
-//            String projectNumber = getResources().getString(R.string.project_number);
-//            new NetworkUtilsChat(getApplicationContext(),url) {
-//                @Override
-//                public Object registerNotification() {
-//                    Object result=null;
-//                    setUrl(getUrl() + "&email=" +email + "&password=" +password);
-//                    try {
-//                        result = getResponse(null);
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                    return result;
-//                }
-//
-//                @Override
-//                public void updateGUI(Object result)
-//                {
-//                    showProgress(false);
-//                    JSONObject response=(JSONObject)result;
-//                    if((response.optString("status").equals("check login")) && response.optBoolean("result")==false)
-//                    {
-//                        Toast.makeText(getApplicationContext(), "Wrong user and password" ,Toast.LENGTH_LONG).show();
-//                    }
-//                    else
-//                    {
-//                        Android.startActivity(getApplicationContext(), com.vunam.chatfirebase.ListChatActivity.class,null);
-//                    }
-//                }
-//            }.regIdCloudMessage(projectNumber);
-//            mAuthTask = new UserLoginTask(email, password);
-//            mAuthTask.execute((Void) null);
+						});
+			} else {
+				url = url + "?regID=" + token + "&email=" + email + "&password=" + password;
+				Login(url);
+			}
         }
-    }
+	}
+
+    private void Login(final String url)
+	{
+		new ProcessAsyncTaskChat() {
+			@Override
+			public Object getBackground() {
+				Object response = null;
+				try {
+					response = new NetworkUtilsChat(getApplicationContext(), url).getResponse(null);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				return response;
+			}
+			@Override
+			public void updateGUI(Object result)
+			{
+				showProgress(false);
+			}
+
+		}.execute();
+
+		// Log and toast
+		Log.d("Firebase", token);
+		Toast.makeText(LoginActivity.this, token, Toast.LENGTH_SHORT).show();
+	}
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
