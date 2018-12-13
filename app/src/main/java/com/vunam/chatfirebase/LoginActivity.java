@@ -191,8 +191,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mPasswordView.setError(null);
 
         //set text
-		mEmailView.setText("test@yahoo.com");
-		mPasswordView.setText("123456");
+		//mEmailView.setText("test@yahoo.com");
+		//mPasswordView.setText("123456");
 
         // Store values at the time of the login attempt.
         final String email = mEmailView.getText().toString();
@@ -241,6 +241,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 								}
 								// Get new Instance ID token
 								token = task.getResult().getToken();
+								new Android.MySharedPreferences(getApplicationContext()).putSharedPreferences("Notification",token);
 								url = url + "?regID=" + token + "&email=" + email + "&password=" + password;
 								Login(url);
 							}
@@ -269,6 +270,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 			public void updateGUI(Object result)
 			{
 				showProgress(false);
+				Android.startActivity(getApplicationContext(),ListChatActivity.class,null);
 			}
 
 		}.execute();
