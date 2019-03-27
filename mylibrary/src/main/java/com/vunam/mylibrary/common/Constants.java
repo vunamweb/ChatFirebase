@@ -6,6 +6,7 @@ package com.vunam.mylibrary.common;
 
 public class Constants {
 	public static String METHOD_GET = "GET";
+	public static String METHOD_POST = "POST";
 	public static Boolean USE_HANDLER = true;
 	public static Boolean USE_ASYNcCTASK = false;
 	public static String INTENT_DATA = "DATA";

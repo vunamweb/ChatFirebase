@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">Chat</string>
-    <string name="project_number">602980189688</string>
+    <string name="projectId">12544342651</string>
     <string name="url">http://vunamweb.com/notification/register.php</string>
-    <string name="call">http://vunamweb.com/notification/gcm.php</string>
+    <string name="call">http://vunamweb.com/notification/gcm_firebase.php</string>
+    <string name="call1">http://vunamweb.com</string>
+    <string name="authorization">key=AAAAAuuzens:APA91bEqgkgdHt7jXpwz0ecyOIUAudlVrXVWZyuJNe9x5h9SkF3QS4QKjNqWEEUjyNlBnziZ2MVoUyTdhdTc0_4kqreCA8_AZw_LSSCMViYQjHLlSVWXvr8L9sQ5Y_Hgfgk59HTGXsgI</string>
     <string name="list">http://vunamweb.com/notification/list.php</string>
     <string name="upload_file">http://vunamweb.com/upload_nam.php</string>
     <string name="title_activity_login">Sign in</string>

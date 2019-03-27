@@ -46,6 +46,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+        //remoteMessage.getData().get("url_imagez")
         // [START_EXCLUDE]
         // There are two types of messages data messages and notification messages. Data messages are handled
         // here in onMessageReceived whether the app is in the foreground or background. Data messages are the type
@@ -72,7 +73,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // message, here is where that should be initiated. See sendNotification method below.
         //sendNotification(remoteMessage.getNotification().getBody());
         Intent intent = new Intent(DISPLAY_MESSAGE_ACTION);
-        intent.putExtra(Constants.INTENT_DATA,remoteMessage.getNotification().getBody());
+
+        Bundle bundle = new Bundle();
+        bundle.putString("message",remoteMessage.getData().get("message"));
+        bundle.putString("url_image",remoteMessage.getData().get("url_image"));
+
+        intent.putExtra(Constants.INTENT_DATA,bundle);
         //intent.setAction(DISPLAY_MESSAGE_ACTION);
         sendBroadcast(intent);
 

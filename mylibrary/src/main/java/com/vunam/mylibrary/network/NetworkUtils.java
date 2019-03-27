@@ -32,6 +32,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -143,6 +144,71 @@ abstract public class NetworkUtils {
 			e.printStackTrace();
 		}
 		return new JSONObject(response);
+	}
+
+	public JSONObject getResponse(Map<String, String> header,String data) throws JSONException {
+		URL url;
+		String response = "";
+		try {
+			url = new URL(this.url);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+//			for(Map.Entry<String, String> entry : header.entrySet()) {
+//				String key = entry.getKey();
+//				String value = entry.getValue();
+//
+//				conn.setRequestProperty(key, value);
+//			}
+			//conn.setReadTimeout(NetworkConstants.TIME_TIMEOUT);
+			//conn.setConnectTimeout(NetworkConstants.TIME_TIMEOUT);
+			conn.setUseCaches(false);
+			conn.setDoInput(true);
+			conn.setDoOutput(true);
+
+			conn.setRequestMethod("POST");
+			//conn.setDoOutput(true);
+			//conn.setDoInput(true);
+
+			for(Map.Entry<String, String> entry : header.entrySet()) {
+				String key = entry.getKey();
+				String value = entry.getValue();
+
+				conn.setRequestProperty(key, value);
+			}
+
+			//sendData(conn,data);
+
+			conn.connect();
+			//checks server's status code first
+			int responseCode = conn.getResponseCode();
+			if (responseCode == HttpsURLConnection.HTTP_OK) {
+				String line;
+				BufferedReader br = new BufferedReader(new InputStreamReader(
+						conn.getInputStream()));
+				while ((line = br.readLine()) != null) {
+					response += line;
+				}
+			} else {
+				response = "";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new JSONObject(response);
+	}
+
+	private void sendData(HttpURLConnection con, String data) throws IOException {
+		DataOutputStream wr = null;
+		try {
+			wr = new DataOutputStream(con.getOutputStream());
+			wr.writeBytes(data);
+			wr.flush();
+			wr.close();
+		} catch(IOException exception) {
+			throw exception;
+		} finally {
+			//this.closeQuietly(wr);
+		}
 	}
 
 	public JSONArray getResponseArray(Map<String, Object> header) throws JSONException {

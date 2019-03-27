@@ -73,12 +73,7 @@ public class MainActivity extends AppCompatActivity {
         LoginActivity.check="1";
 		Log.i("Mainactivity",LoginActivity.check);
         //String projectNumber = getResources().getString(R.string.project_number);
-        regId = new Android.MySharedPreferences(this).getSharedPreferences("regId");
-        if(regId.equals(""))
-		{
-			//regId = Android.getValueFromKeyOfBundle(this,Constants.INTENT_DATA,"regId");
-			//new Android.MySharedPreferences(this).putSharedPreferences("regId",regId);
-		}
+        regId = Android.getValueFromKeyOfBundle(this,Constants.INTENT_DATA,"regId");
         textMessage = (EditText)findViewById(R.id.message);
         send = (Button)findViewById(R.id.send);
 		camera = (Button)findViewById(R.id.camera);
@@ -160,8 +155,8 @@ public class MainActivity extends AppCompatActivity {
     private final BroadcastReceiver mHandleMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String newMessage = intent.getStringExtra(Constants.INTENT_DATA);
-			String urlImage = "";  //intent.getBundleExtra(Constants.INTENT_DATA).getString("url_image");
+            String newMessage = intent.getBundleExtra(Constants.INTENT_DATA).getString("message");
+			String urlImage =  intent.getBundleExtra(Constants.INTENT_DATA).getString("url_image");
             Message message = new Message(newMessage,urlImage);
 			listMessage.add(message);
 			//if is first time to show list message
